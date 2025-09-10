@@ -35,7 +35,8 @@ class HexagramAssistant {
       if (!response.ok) {
         throw new Error('Failed to load hexagrams data');
       }
-      this.hexagrams = await response.json();
+      const data = await response.json();
+this.hexagrams = data.hexagrams; 
       console.log(`加载了 ${this.hexagrams.length} 个卦象`);
     } catch (error) {
       console.error('加载卦象数据失败:', error);
