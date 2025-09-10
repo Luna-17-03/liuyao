@@ -12,20 +12,25 @@ const prompt = `你是一位精通《易经》和《增删卜易》等一切六�
 抽到的卦象是【${hexagram.name}】，它的核心释义是：“${hexagram.meaning}”，关键词包括：${hexagram.keywords.join('、')}。针对用户关心的问题，卦象的解读是：“${categoryInterpretation}”。
 
 请综合以上信息，生成一段200字左右的、高度定制化的解读。`;
-    const response = await fetch('https://api.deepseek.com/chat/completions', {
+    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
       body: JSON.stringify({
         model: "deepseek-chat",
         messages: [{ "role": "user", "content": prompt }],
-        max_tokens: 500,
-        temperature: 0.7,
       })
     });
-    if (!response.ok) throw new Error('Failed to fetch AI interpretation.');
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('DeepSeek API Error:', errorData);
+      throw new Error('Failed to fetch AI interpretation.');
+    }
     const data = await response.json();
-    return { statusCode: 200, body: JSON.stringify({ interpretation: data.choices[0].message.content }) };
+    const aiInterpretation = data.choices[0].message.content;
+    return { statusCode: 200, body: JSON.stringify({ interpretation: aiInterpretation }) };
   } catch (error) {
+    console.error('Function Error:', error);
     return { statusCode: 500, body: JSON.stringify({ error: 'Internal Server Error' }) };
   }
 };
