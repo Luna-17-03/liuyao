@@ -5,7 +5,7 @@ exports.handler = async function(event) {
   }
 
   try {
-    // 重新加回这行代码，从前端请求中正确地获取 question 和 hexagram
+    // 这一行代码被重新加了回来，它会从前端请求中正确地获取 question 和 hexagram
     const { question, hexagram } = JSON.parse(event.body);
 
     const apiKey = process.env.DEEPSEEK_API_KEY;
@@ -15,7 +15,7 @@ exports.handler = async function(event) {
     }
 
     // 构造一个健壮的指令，确保所有变量都已定义
-    const prompt = `你是一位精通《易经》和《增删卜易》等一切六爻需要知识的智者。请根据用户的问题和抽到的卦象信息，为用户提供一段充满智慧、积极正向且通俗易懂的决策建议。
+    const prompt = `你是一位精通《易经》和《增删卜易》等一切六爻所需知识的智者。请根据用户的问题和抽到的卦象信息，为用户提供一段充满智慧、积极正向且通俗易懂的决策建议。
 
     用户的问题是：“${question}”
 
@@ -35,7 +35,7 @@ exports.handler = async function(event) {
         messages: [{ "role": "user", "content": prompt }]
       })
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       console.error('DeepSeek API 返回错误:', errorData);
