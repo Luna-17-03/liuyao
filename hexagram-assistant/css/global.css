@@ -852,6 +852,51 @@ body {
   font-size: 14px; font-weight: bold; color: white; margin-left: 10px;
   vertical-align: middle;
 }
+/* 对话窗口样式 */
+.chat-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; justify-content: center; align-items: center; z-index: 2000;
+}
+.chat-modal-content {
+    background: #f9f9f9; width: 90%; max-width: 600px;
+    border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    display: flex; flex-direction: column; height: 80vh;
+}
+.chat-modal-header {
+    padding: 15px 20px; border-bottom: 1px solid #eee;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.close-button {
+    background: none; border: none; font-size: 24px; cursor: pointer;
+}
+.chat-window {
+    flex-grow: 1; overflow-y: auto; padding: 20px;
+}
+.chat-message {
+    margin-bottom: 15px; max-width: 80%;
+}
+.user-message {
+    background-color: #667eea; color: white;
+    padding: 10px 15px; border-radius: 15px 15px 0 15px;
+    align-self: flex-end; margin-left: auto;
+}
+.ai-message {
+    background-color: #e9e9eb; color: #333;
+    padding: 10px 15px; border-radius: 15px 15px 15px 0;
+    align-self: flex-start;
+}
+.chat-input-area {
+    display: flex; padding: 10px; border-top: 1px solid #eee;
+}
+#chat-input {
+    flex-grow: 1; border: 1px solid #ccc; border-radius: 20px;
+    padding: 10px 15px; resize: none; font-family: inherit;
+}
+#send-chat-btn {
+    background: #667eea; color: white; border: none;
+    border-radius: 20px; padding: 0 20px; margin-left: 10px; cursor: pointer;
+}
 .fortune-大吉 { background-color: #e53935; }
 .fortune-吉 { background-color: #fb8c00; }
 .fortune-中平 { background-color: #43a047; }
