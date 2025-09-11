@@ -152,8 +152,23 @@
                 <div class="result-actions">
                     <button class="secondary-button" id="regenerate-btn">重新解读</button>
                     <button class="primary-button" id="save-btn">保存结果</button>
+                    <button class="secondary-button" id="continue-chat-btn">继续提问</button>
                 </div>
             </div>
+            <div id="chat-modal" class="chat-modal-overlay">
+    <div class="chat-modal-content">
+        <div class="chat-modal-header">
+            <h3>与AI深入交流</h3>
+            <button id="close-chat-btn" class="close-button">&times;</button>
+        </div>
+        <div id="chat-window" class="chat-window">
+            </div>
+        <div class="chat-input-area">
+            <textarea id="chat-input" placeholder="请在这里输入你的追问..."></textarea>
+            <button id="send-chat-btn">发送</button>
+        </div>
+    </div>
+</div>
         </div>
         
         <!-- 历史记录页 -->
