@@ -9,6 +9,7 @@ class HexagramAssistant {
     this.hexagrams = [];
     this.hexagramHistory = [];
     this.currentHexagram = null;
+    this.chatHistory = []; 
     
     this.init();
   }
@@ -24,8 +25,68 @@ class HexagramAssistant {
     // 绑定事件
     this.bindEvents();
     
+    
     // 显示首页
     this.showPage('home');
+    
+openChat() {
+    document.getElementById('chat-modal').style.display = 'flex';
+    this.renderChatHistory();
+}
+
+closeChat() {
+    document.getElementById('chat-modal').style.display = 'none';
+}
+
+renderChatHistory() {
+    const chatWindow = document.getElementById('chat-window');
+    chatWindow.innerHTML = ''; // 清空
+    this.chatHistory.forEach(msg => {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `chat-message ${msg.role === 'user' ? 'user-message' : 'ai-message'}`;
+        msgDiv.textContent = msg.content;
+        chatWindow.appendChild(msgDiv);
+    });
+    // 滚动到底部
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+async handleFollowUpSubmit() {
+    const chatInput = document.getElementById('chat-input');
+    const userQuestion = chatInput.value.trim();
+    if (!userQuestion) return;
+
+    // 更新对话历史并重新渲染
+    this.chatHistory.push({ role: 'user', content: userQuestion });
+    this.renderChatHistory();
+    chatInput.value = '';
+
+    try {
+        // 调用后端API，这次要带上完整的对话历史
+        const response = await fetch('/api/get-ai-interpretation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                question: userQuestion, // 发送新的追问
+                hexagram: this.currentHexagram, // 卦象信息仍然需要
+                chatHistory: this.chatHistory // 带上上下文历史
+            })
+        });
+
+        if (!response.ok) throw new Error('AI service failed.');
+
+        const data = await response.json();
+        const aiReply = data.interpretation;
+
+        // 更新对话历史并重新渲染
+        this.chatHistory.push({ role: 'assistant', content: aiReply });
+        this.renderChatHistory();
+
+    } catch (error) {
+        this.chatHistory.push({ role: 'assistant', content: '抱歉，我现在无法回复，请稍后再试。' });
+        this.renderChatHistory();
+    }
+}
   }
 
   // 加载卦象数据
@@ -132,6 +193,10 @@ this.hexagrams = data.hexagrams;
       questionInput.addEventListener('input', (e) => {
         this.question = e.target.value;
         this.updateCharCount();
+        document.getElementById('continue-chat-btn')?.addEventListener('click', () => this.openChat());
+        document.getElementById('close-chat-btn')?.addEventListener('click', () => this.closeChat());
+        document.getElementById('send-chat-btn')?.addEventListener('click', () => this.handleFollowUpSubmit());
+
       });
     }
 
@@ -358,6 +423,15 @@ async generateAIInterpretation() {
   
       // 4. 获取AI返回的解读
       const data = await response.json();
+      const aiInterpretation = data.interpretation;
+
+// --- 新增代码，初始化对话历史 ---
+this.chatHistory = [
+    { role: 'assistant', content: aiInterpretation }
+];
+// --- 新增代码结束 ---
+
+this.typewriterEffect(interpretationContent, aiInterpretation);
   
       // 5. 用打字机效果显示出来
       this.typewriterEffect(interpretationContent, data.interpretation);
