@@ -1,7 +1,20 @@
-# 文件路径: netlify.toml
+# 这是最终的、合并后的 netlify.toml 文件
+
+# [build] 块是必须的，它告诉Netlify你的网站文件和函数文件在哪里
+[build]
+  # “发布目录”：你的网站在 hexagram-assistant 文件夹里
+  publish = "hexagram-assistant"
+  
+  # “函数目录”：你的“信使”函数在 netlify/functions 文件夹里
+  functions = "netlify/functions"
+
+# [functions] 块可以对所有函数进行统一配置
 [functions]
-  directory = "netlify/functions/"
+  # 我们在这里给函数增加“耐心”，将超时时间延长到26秒
+  timeout = 26
+
+# [[redirects]] 块设置URL转发规则，让前端能访问到后端“信使”函数
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
-  status = 200
+  status = 200 # 200表示这是一个内部转发，而不是跳转
