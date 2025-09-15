@@ -21,7 +21,7 @@ exports.handler = async function(event) {
   
       抽到的卦象是【${hexagram.name}】，它的核心释义是：“${hexagram.meaning}”，关键词包括：${hexagram.keywords.join('、')}。针对用户关心的问题，卦象的解读是：“${hexagram.interpretation.general}”。
   
-      请综合以上信息，根据问题复杂程度生成一段200～600字左右的、高度定制化的解读。`;
+      请综合以上信息，根据问题复杂程度生成一段200～300字左右的、高度定制化的解读。`;
   
       // 调用DeepSeek API
       const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
