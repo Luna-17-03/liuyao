@@ -15,13 +15,13 @@ exports.handler = async function(event) {
       }
   
       // 构造一个健壮的指令，确保所有变量都已定义
-      const prompt = `你是一位精通《易经》和《增删卜易》等一切六爻所需知识的智者。请根据用户的问题和抽到的卦象信息，为用户提供一段充满智慧、积极正向且通俗易懂的决策建议。
+      const prompt = `你是一位精通《易经》和《增删卜易》等一切六爻、心理学等所需知识的智者。请根据用户的问题和抽到的卦象信息，为用户提供一段充满智慧、积极正向且通俗易懂的决策建议，但不要假大空注水胡说，目的是真实地分析卦象、具体结合用户提问，给出切实有用的解决方案。
   
       用户的问题是：“${question}”
   
       抽到的卦象是【${hexagram.name}】，它的核心释义是：“${hexagram.meaning}”，关键词包括：${hexagram.keywords.join('、')}。针对用户关心的问题，卦象的解读是：“${hexagram.interpretation.general}”。
   
-      请综合以上信息，生成一段200字左右的、高度定制化的解读。`;
+      请综合以上信息，根据问题复杂程度生成一段200～600字左右的、高度定制化的解读。`;
   
       // 调用DeepSeek API
       const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
