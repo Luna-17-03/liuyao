@@ -31,7 +31,7 @@ exports.handler = async function(event) {
           'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: "deepseek-reasoner",
+          model: "deepseek-chat",
           messages: [{ "role": "user", "content": prompt }]
         })
       });
